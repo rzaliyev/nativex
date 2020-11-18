@@ -44,3 +44,33 @@ function nativex_register_scripts() {
   wp_enqueue_script( 'nativex-js', get_stylesheet_directory_uri() . '/js/custom.js'); 
 } 
 add_action('wp_enqueue_scripts','nativex_register_scripts');
+
+// Adding campaign links to the REST API response
+add_action('rest_api_init', function () {
+  
+  register_rest_field('post',
+      'campaigns',
+      array(
+          'get_callback' => function ($object, $field_name, $request) {
+            global $post;
+            $postUrl = get_permalink( $post->id );
+
+            // Getting the campaign fields
+			      $clicks = get_field("clicks", $post->id);
+			      $region = get_field("region", $post->id);
+			      $start_date = get_field("start_date", $post->id);
+			      $end_date = get_field("end_date", $post->id);
+
+            return [
+				      'url' => [$postUrl],
+              'clicks' => [$clicks],
+              'region' => [$region],
+				      'start_date' => [$start_date],
+				      'end_date' => [$end_date]
+            ];
+          },
+          'update_callback' => null,
+          'schema' => null,
+      )
+  );
+});
