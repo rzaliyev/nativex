@@ -60,6 +60,8 @@ add_action('rest_api_init', function () {
               $region = get_field('region', $post->id);
               $start_date = get_field('start_date', $post->id);
               $end_date = get_field('end_date', $post->id);
+              $imp_tracker = get_field('imp_tracker', $post->id);
+              $click_tracker = get_field('click_tracker', $post->id);
 
               return [
                 'url' => [$postUrl],
@@ -67,6 +69,8 @@ add_action('rest_api_init', function () {
                 'region' => [$region],
                 'start_date' => [$start_date],
                 'end_date' => [$end_date],
+                'imp_tracker' => [$imp_tracker],
+                'click_tracker' => [$click_tracker],
             ];
           },
           'update_callback' => null,
